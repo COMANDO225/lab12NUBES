@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("RDSDB")
+}
+
+// aqui crearemos un modelo de usuario basico y un modelo de contacto
+model User {
+  id           Int        @id @default(autoincrement())
+  email        String     @unique
+  nombre       String
+  apellido     String
+  password     String
+  contactos    Contacto[]
+  refreshToken String?
+}
+
+model Contacto {
+  id        Int     @id @default(autoincrement())
+  nombre    String
+  apellido  String?
+  telefono  String  @unique
+  direccion String?
+  email     String?
+  userId    Int
+  user      User    @relation(fields: [userId], references: [id])
+}
